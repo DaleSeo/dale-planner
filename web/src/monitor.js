@@ -1,4 +1,5 @@
 const http = require('http')
 setInterval(_ => {
+  console.log('#monitor')
   http.get('/health')
-}, 5 * 60 * 1000) // 5 mins
+}, 60 * 1000) // 1 mins
