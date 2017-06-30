@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="ui segment pushable">
-    <div class="ui inverted vertical icon labeled menu sidebar">
+    <div class="ui inverted vertical icon labeled menu visible thin sidebar">
       <div class="item" @click="select('home')">
         <i class="home icon"/>Dale's Home
       </div>
@@ -35,16 +35,16 @@ export default {
     }
   },
   mounted () {
-    $('#app .ui.sidebar')
-      .sidebar({
-        context: $('#app')
-      })
-      .sidebar('attach events', '#app .menu .item')
+    // $('#app .ui.sidebar')
+    //   .sidebar({
+    //     context: $('#app')
+    //   })
+    //   .sidebar('attach events', '#app .menu .item')
   },
   methods: {
     toggleMenu () {
-      $('#app .ui.sidebar')
-        .sidebar('toggle')
+      // $('#app .ui.sidebar')
+      //   .sidebar('toggle')
     },
     select (menuItem) {
       console.log('#selected:', menuItem)
