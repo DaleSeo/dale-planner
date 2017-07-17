@@ -21,5 +21,5 @@ module.exports = mongoose.model('Task', {
     default: new Date()
   },
   completedAt: Date,
-  due: Date
+  dueAt: Date
 })

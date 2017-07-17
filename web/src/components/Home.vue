@@ -3,10 +3,7 @@
     <h1 class="ui dividing header">
       Dale's Planner
     </h1>
-    <div class="ui three column centered grid">
-      <div class="center aligned column">
-        <Clock/>
-      </div>
+    <div class="ui two column centered grid">
       <div class="center aligned column">
         <Timer/>
       </div>

@@ -3,13 +3,12 @@ const Task = require('../models/Task')
 
 router.get('/', (req, res) => {
   Task.find()
+    .sort({createdAt: -1})
     .then(tasks => res.send(tasks))
 })
 
 router.post('/', (req, res) => {
-  let task = req.body
-  task.created = new Date()
-  Task.create(task)
+  Task.create(req.body)
     .then(_ => res.sendStatus(201))
 })
 

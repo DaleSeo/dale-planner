@@ -1,6 +1,6 @@
 <template>
   <div class="ui message">
-    <i class="close icon" @click="del"/>
+    <i class="close icon" @click="$emit('del')"/>
     <div class="header">
       {{task.title}}
     </div>
@@ -14,12 +14,7 @@ export default {
   props: ['task'],
   computed: {
     taskDate () {
-      return moment(this.task.date).format('HH:mm:ss')
-    }
-  },
-  methods: {
-    del () {
-      this.$emit('del', this.task._id)
+      return moment(this.task.createdAt).format('HH:mm:ss')
     }
   }
 }
