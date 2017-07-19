@@ -26,7 +26,7 @@ describe('Task', function () {
     Task.find({})
       .then(tasks => {
         // console.log(tasks)
-        expect(tasks).to.have.lengthOf(3)
+        expect(tasks).to.have.lengthOf.at.least(3)
         done()
       })
   })
@@ -36,7 +36,7 @@ describe('Task', function () {
       .then(task => {
         // console.log(task)
         expect(task.title).to.be.equal('Task4')
-        expect(task.status).to.be.equal('ToDo')
+        expect(task.status).to.be.equal(0)
         expect(task.priority).to.be.equal('MID')
         expect(task.createdAt).to.be.a('date')
         done()
