@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import Settings from './timer/Settings.vue'
+import Settings from './Settings.vue'
 
 const WORK_MODE = {
   duration: 25,

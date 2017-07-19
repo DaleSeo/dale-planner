@@ -17,7 +17,7 @@
 <script>
 import Clock from './Clock.vue'
 import Timer from './Timer.vue'
-import Todo from './Todo.vue'
+import Todo from '../todo/Index.vue'
 
 export default {
   components: {Clock, Timer, Todo}

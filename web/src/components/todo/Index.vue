@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import Item from './todo/Item.vue'
+import Item from './Item.vue'
 
 export default {
   components: {Item},
