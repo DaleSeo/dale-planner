@@ -11,9 +11,10 @@ module.exports = mongoose.model('Task', {
     enum: ['HIGH', 'MID', 'LOW'],
     default: 'MID'
   },
-  completed: {
-    type: Boolean,
-    default: false
+  status: {
+    type: String,
+    enum: ['ToDo', 'Doing', 'Done'],
+    default: 'ToDo'
   },
   createdAt: {
     type: Date,

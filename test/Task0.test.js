@@ -29,7 +29,7 @@ describe('Task', function () {
     const expectedModels = [a, b]
     Task.find.yields(null, expectedModels)
     Task.find({}, (err, tasks) => {
-      console.log('tasks:', tasks)
+      // console.log('tasks:', tasks)
       done()
     })
   })

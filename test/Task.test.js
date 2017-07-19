@@ -14,6 +14,7 @@ describe('Task', function () {
   beforeEach(function (done) {
     Task.insertMany(testTasks)
     .then(_ => done())
+    .catch(err => console.error(err))
   })
 
   afterEach(function (done) {
@@ -35,7 +36,7 @@ describe('Task', function () {
       .then(task => {
         // console.log(task)
         expect(task.title).to.be.equal('Task4')
-        expect(task.completed).to.be.false
+        expect(task.status).to.be.equal('ToDo')
         expect(task.priority).to.be.equal('MID')
         expect(task.createdAt).to.be.a('date')
         done()
