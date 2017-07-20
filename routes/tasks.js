@@ -2,7 +2,13 @@ const router = require('express').Router()
 const Task = require('../models/Task')
 
 router.get('/', (req, res) => {
-  Task.find()
+  console.log('req.query.completed:', req.query.completed)
+  let query = {}
+  if (req.query.completed) {
+    query.completedAt = {$exists: req.query.completed === 'true'}
+  }
+  console.log('query:', query)
+  Task.find(query)
     .sort({status: 1, createdAt: -1})
     .then(tasks => res.send(tasks))
 })

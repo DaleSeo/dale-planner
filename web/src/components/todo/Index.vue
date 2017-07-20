@@ -1,37 +1,46 @@
 <template>
-  <div class="ui segment">
-    <h2 class="ui center aligned icon header">
-      <i class="list icon"/>Todos
-      <div class="sub header">{{tasks.length}} items</div>
-    </h2>
-    <div class="ui list">
-      <Item
-        :key="task._id"
-        :task="task"
-        @del="del(task._id)"
-        v-for="task in tasks"
-      />
+  <div class="ui text container">
+    <div class="ui segment">
+      <h2 class="ui center aligned icon header">
+        <i class="list icon"/>Todos
+        <div class="sub header">{{tasks.length}} items</div>
+      </h2>
+      <StatusFilter v-model="query.completed" @fetch="fetch"/>
+      <pre>{{query}}</pre>
+      <div class="ui list">
+        <Item
+          :key="task._id"
+          :task="task"
+          @del="del(task._id)"
+          v-for="task in tasks"
+        />
+      </div>
+      <div class="ui fluid action input">
+        <input type="text" placeholder="Enter a new task" v-model="newTask.title" @keyup.enter="add"/>
+        <button class="ui icon button" @click="add">
+          <i class="plus icon"/>
+        </button>
+      </div>
+      <!-- <pre>{{tasks}}</pre> -->
     </div>
-    <div class="ui fluid action input">
-      <input type="text" placeholder="Enter a new task" v-model="newTask.title" @keyup.enter="add"/>
-      <button class="ui icon button" @click="add">
-        <i class="plus icon"/>
-      </button>
-    </div>
-    <!-- <pre>{{tasks}}</pre> -->
   </div>
 </template>
 
 <script>
 import Item from './Item.vue'
+import StatusFilter from './StatusFilter.vue'
 
 export default {
-  components: {Item},
+  components: {Item, StatusFilter},
   data () {
     return {
       tasks: [],
       newTask: {
         title: ''
+      },
+      query: {
+        completed: '',
+        keyword: ''
       }
     }
   },
@@ -40,7 +49,8 @@ export default {
   },
   methods: {
     fetch () {
-      return this.$http.get('tasks')
+      let url = `tasks?completed=${this.query.completed}`
+      return this.$http.get(url)
         .then(res => res.body)
         .then(tasks => this.tasks = tasks)
     },

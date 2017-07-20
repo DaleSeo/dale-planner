@@ -13,7 +13,7 @@
         <i class="video play icon"/>
       </div>
     </div>
-    <!-- <pre>{{task}}</pre> -->
+    <pre>{{task}}</pre>
   </div>
 </template>
 
