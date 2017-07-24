@@ -6,14 +6,21 @@
     </div>
     <div>
       <i class="wait icon"/>
-        {{taskDate}}
+        {{createdAt}}
+      <span v-if="task.completedAt">
+        <i class="wait icon"/>
+          {{completedAt}}
+      </span>
     </div>
     <div style="text-align: right">
-      <div class="ui mini icon button" @click="toggleStatus">
+      <div class="ui tiny icon button" @click="toggleComplete">
+        <i class="icon" :class="completeClass"/>
+      </div>
+      <div class="ui tiny icon button" @click="toggleStatus">
         <i class="video play icon"/>
       </div>
     </div>
-    <pre>{{task}}</pre>
+    <!-- <pre>{{task}}</pre> -->
   </div>
 </template>
 
@@ -21,17 +28,20 @@
 export default {
   props: ['task'],
   computed: {
-    taskDate () {
-      return moment(this.task.createdAt).format('HH:mm:ss')
+    createdAt () {
+      return 'Created At ' + moment(this.task.createdAt).format('YY/MM/DD HH:mm:ss')
+    },
+    completedAt () {
+      return 'Completed At ' + moment(this.task.completedAt).format('YY/MM/DD HH:mm:ss')
     },
     color () {
-      switch (this.task.status) {
-        case 1:
-          return 'positive'
-        case 2:
-          return 'negative'
-        default:
-          return ''
+      return this.task.completedAt ? 'black' : ''
+    },
+    completeClass () {
+      if (this.task.completedAt) {
+        return 'checkmark box'
+      } else {
+        return 'square outline'
       }
     }
   },
@@ -40,6 +50,11 @@ export default {
       let nextStatus = (this.task.status + 1) % 3
       this.$set(this.task, 'status', nextStatus)
       this.$http.patch(`tasks/${this.task._id}`, {status: nextStatus})
+    },
+    toggleComplete () {
+      let completedAt = this.task.completedAt ? null : new Date()
+      this.$http.patch(`tasks/${this.task._id}`, {completedAt})
+        .then(_ => this.$emit('fetch'))
     }
   }
 }

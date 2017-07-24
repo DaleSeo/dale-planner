@@ -6,12 +6,12 @@
         <div class="sub header">{{tasks.length}} items</div>
       </h2>
       <StatusFilter v-model="query.completed" @fetch="fetch"/>
-      <pre>{{query}}</pre>
       <div class="ui list">
         <Item
           :key="task._id"
           :task="task"
           @del="del(task._id)"
+          @fetch="fetch"
           v-for="task in tasks"
         />
       </div>

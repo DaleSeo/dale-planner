@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-module.exports = mongoose.model('Task', {
+const taskSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true
@@ -24,3 +24,10 @@ module.exports = mongoose.model('Task', {
   completedAt: Date,
   dueAt: Date
 })
+
+taskSchema.virtual('completed').
+  get(function() {
+    return !!this.completedAt
+  })
+
+module.exports = mongoose.model('Task', taskSchema)
