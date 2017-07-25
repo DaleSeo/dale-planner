@@ -1,7 +1,7 @@
 <template>
   <div class="ui container">
     <h1 class="ui dividing header">
-      Dale's Planner
+      Time Never Comes Back
     </h1>
     <div class="ui two column centered grid">
       <div class="center aligned column">

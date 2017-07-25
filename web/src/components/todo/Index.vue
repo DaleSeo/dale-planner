@@ -1,28 +1,26 @@
 <template>
-  <div class="ui text container">
-    <div class="ui segment">
-      <h2 class="ui center aligned icon header">
-        <i class="list icon"/>Todos
-        <div class="sub header">{{tasks.length}} items</div>
-      </h2>
-      <StatusFilter v-model="query.completed" @fetch="fetch"/>
-      <div class="ui list">
-        <Item
-          :key="task._id"
-          :task="task"
-          @del="del(task._id)"
-          @fetch="fetch"
-          v-for="task in tasks"
-        />
-      </div>
-      <div class="ui fluid action input">
-        <input type="text" placeholder="Enter a new task" v-model="newTask.title" @keyup.enter="add"/>
-        <button class="ui icon button" @click="add">
-          <i class="plus icon"/>
-        </button>
-      </div>
-      <!-- <pre>{{tasks}}</pre> -->
+  <div class="ui segment">
+    <h2 class="ui center aligned icon header">
+      <i class="list icon"/>Todos
+      <div class="sub header">{{tasks.length}} items</div>
+    </h2>
+    <StatusFilter v-model="query.completed" @fetch="fetch"/>
+    <div class="ui list">
+      <Item
+        :key="task._id"
+        :task="task"
+        @del="del(task._id)"
+        @fetch="fetch"
+        v-for="task in tasks"
+      />
     </div>
+    <div class="ui fluid action input">
+      <input type="text" placeholder="Enter a new task" v-model="newTask.title" @keyup.enter="add"/>
+      <button class="ui icon button" @click="add">
+        <i class="plus icon"/>
+      </button>
+    </div>
+    <!-- <pre>{{tasks}}</pre> -->
   </div>
 </template>
 
