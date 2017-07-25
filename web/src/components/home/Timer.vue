@@ -6,11 +6,8 @@
       <div class="sub header">{{title}}</div>
     </h2>
     <div>
-      <button class="ui mini icon button" @click="play">
-        <i class="play icon"/>
-      </button>
-      <button class="ui mini icon button" @click="pause">
-        <i class="pause icon"/>
+      <button class="ui mini icon button" @click="control">
+        <i class="icon" :class="controlIcon"/>
       </button>
       <button class="ui mini icon button" @click="backward">
         <i class="step backward icon"/>
@@ -30,7 +27,7 @@
     </div>
     <Settings :settings="settings" v-if="showSettings"/>
     <!-- <pre>
-      {{ {mode, state, timer, remaining} }}
+      {{ {mode, state, ticker, remaining} }}
     </pre> -->
   </div>
 </template>
@@ -62,8 +59,8 @@ export default {
     return {
       mode: WORK_MODE,
       state: STOP,
-      timer: null,
       remaining: 0,
+      ticker: null,
       settings: {
         workDuration: 25,
         breakDuration: 5
@@ -95,6 +92,9 @@ export default {
     },
     icon () {
       return this.mode.icon
+    },
+    controlIcon () {
+      return this.state === PLAYING ? 'pause' : 'play'
     }
   },
   watch: {
@@ -107,23 +107,40 @@ export default {
   },
   created () {
     Notification.requestPermission()
+    if (localStorage.getItem('mode')) {
+      this.mode = JSON.parse(localStorage.getItem('mode'))
+    }
+    if (localStorage.getItem('state')) {
+      this.state = +localStorage.getItem('state')
+      if (this.state === PLAYING) {
+        this.ticker = setInterval(_ => this.tick(), 1000)
+      }
+    }
+    if (localStorage.getItem('remaining')) {
+      this.remaining = +localStorage.getItem('remaining')
+    }
   },
   methods: {
+    control () {
+      if (this.state === PLAYING) {
+        this.pause()
+      } else {
+        this.play()
+      }
+    },
     play () {
       console.log('#play')
-      if (this.state === PLAYING) return
       if (this.state === STOP) {
         this.remaining = this.mode.duration * 60
       }
       this.state = PLAYING
-      this.timer = setInterval(_ => this.tick(), 1000)
+      this.ticker = setInterval(_ => this.tick(), 1000)
     },
     pause () {
       console.log('#pause')
-      if (this.state === PAUSED || this.state === STOP) return
       this.state = PAUSED
-      if (this.timer) {
-        clearInterval(this.timer)
+      if (this.ticker) {
+        clearInterval(this.ticker)
       }
     },
     backward () {
@@ -148,7 +165,9 @@ export default {
         this.toggleMode()
         this.notify()
       }
-      this.remaining--
+      localStorage.setItem('mode', JSON.stringify(this.mode))
+      localStorage.setItem('state', this.state)
+      localStorage.setItem('remaining', --this.remaining)
     },
     toggleMode () {
       this.mode = this.mode === WORK_MODE ? BREAK_MODE : WORK_MODE
