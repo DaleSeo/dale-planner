@@ -2,7 +2,7 @@
   <div class="ui message" :class="color">
     <i class="close icon" @click="$emit('del')"/>
     <div class="header">
-      {{task.title}}
+      <TitleInput v-model="task.title"/>
     </div>
     <div>
       <i class="wait icon"/>
@@ -25,7 +25,10 @@
 </template>
 
 <script>
+import TitleInput from './TitleInput.vue'
+
 export default {
+  components: {TitleInput},
   props: ['task'],
   computed: {
     createdAt () {
@@ -45,6 +48,11 @@ export default {
       }
     }
   },
+  watch: {
+    'task.title': function (title) {
+      this.updateTitle ()
+    }
+  },
   methods: {
     toggleStatus () {
       let nextStatus = (this.task.status + 1) % 3
@@ -55,6 +63,10 @@ export default {
       let completedAt = this.task.completedAt ? null : new Date()
       this.$http.patch(`tasks/${this.task._id}`, {completedAt})
         .then(_ => this.$emit('fetch'))
+    },
+    updateTitle () {
+      console.log('#updateTitle')
+      this.$http.patch(`tasks/${this.task._id}`, {title: this.task.title})
     }
   }
 }
