@@ -37,7 +37,7 @@ export default {
         title: ''
       },
       query: {
-        completed: '',
+        completed: false,
         keyword: ''
       }
     }

@@ -27,6 +27,9 @@
 
 <script>
 export default {
+  created () {
+    Notification.requestPermission()
+  },
   mounted () {
     $('#app .ui.sidebar')
       .sidebar({

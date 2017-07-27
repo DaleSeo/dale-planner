@@ -57,9 +57,11 @@ export default {
   components: {Settings},
   data () {
     return {
-      mode: WORK_MODE,
-      state: STOP,
-      remaining: 0,
+      timer: {
+        mode: WORK_MODE,
+        state: STOP,
+        remaining: 0
+      },
       ticker: null,
       settings: {
         workDuration: 25,
@@ -71,30 +73,30 @@ export default {
   computed: {
     minutes: {
       get () {
-        return zeroFill(Math.floor(this.remaining / 60))
+        return zeroFill(Math.floor(this.timer.remaining / 60))
       },
       set (val) {
         console.log('#val:' + val)
         console.log('#set:', parseInt(val) * 60 + this.seconds)
-        this.remaining = parseInt(val) * 60 + parseInt(this.seconds)
+        this.timer.remaining = parseInt(val) * 60 + parseInt(this.seconds)
       }
     },
     seconds: {
       get () {
-        return zeroFill(this.remaining % 60)
+        return zeroFill(this.timer.remaining % 60)
       },
       set (val) {
-        this.remaining = parseInt(this.minutes) * 60 + parseInt(val)
+        this.timer.remaining = parseInt(this.minutes) * 60 + parseInt(val)
       }
     },
     title () {
-      return this.mode.title
+      return this.timer.mode.title
     },
     icon () {
-      return this.mode.icon
+      return this.timer.mode.icon
     },
     controlIcon () {
-      return this.state === PLAYING ? 'pause' : 'play'
+      return this.timer.state === PLAYING ? 'pause' : 'play'
     }
   },
   watch: {
@@ -106,23 +108,22 @@ export default {
     }
   },
   created () {
-    Notification.requestPermission()
     if (localStorage.getItem('mode')) {
-      this.mode = JSON.parse(localStorage.getItem('mode'))
+      this.timer.mode = JSON.parse(localStorage.getItem('mode'))
     }
     if (localStorage.getItem('state')) {
-      this.state = +localStorage.getItem('state')
-      if (this.state === PLAYING) {
+      this.timer.state = +localStorage.getItem('state')
+      if (this.timer.state === PLAYING) {
         this.ticker = setInterval(_ => this.tick(), 1000)
       }
     }
     if (localStorage.getItem('remaining')) {
-      this.remaining = +localStorage.getItem('remaining')
+      this.timer.remaining = +localStorage.getItem('remaining')
     }
   },
   methods: {
     control () {
-      if (this.state === PLAYING) {
+      if (this.timer.state === PLAYING) {
         this.pause()
       } else {
         this.play()
@@ -130,26 +131,26 @@ export default {
     },
     play () {
       console.log('#play')
-      if (this.state === STOP) {
-        this.remaining = this.mode.duration * 60
+      if (this.timer.state === STOP) {
+        this.timer.remaining = this.timer.mode.duration * 60
       }
-      this.state = PLAYING
+      this.timer.state = PLAYING
       this.ticker = setInterval(_ => this.tick(), 1000)
     },
     pause () {
       console.log('#pause')
-      this.state = PAUSED
+      this.timer.state = PAUSED
       if (this.ticker) {
         clearInterval(this.ticker)
       }
     },
     backward () {
       console.log('#backward')
-      this.remaining = this.mode.duration * 60
+      this.timer.remaining = this.timer.mode.duration * 60
     },
     forward () {
       console.log('#forward')
-      this.remaining = 0
+      this.timer.remaining = 0
     },
     plus () {
       this.minutes++
@@ -161,20 +162,20 @@ export default {
       this.showSettings = !this.showSettings
     },
     tick () {
-      if (this.remaining <= 0) {
+      if (this.timer.remaining <= 0) {
         this.toggleMode()
         this.notify()
       }
-      localStorage.setItem('mode', JSON.stringify(this.mode))
-      localStorage.setItem('state', this.state)
-      localStorage.setItem('remaining', --this.remaining)
+      localStorage.setItem('mode', JSON.stringify(this.timer.mode))
+      localStorage.setItem('state', this.timer.state)
+      localStorage.setItem('remaining', --this.timer.remaining)
     },
     toggleMode () {
-      this.mode = this.mode === WORK_MODE ? BREAK_MODE : WORK_MODE
-      this.remaining = this.mode.duration * 60
+      this.timer.mode = this.timer.mode === WORK_MODE ? BREAK_MODE : WORK_MODE
+      this.timer.remaining = this.timer.mode.duration * 60
     },
     notify () {
-      if (this.mode === WORK_MODE) {
+      if (this.timer.mode === WORK_MODE) {
         new Notification('It\'s time to work!')
       } else {
         new Notification('It\'s time to break!')

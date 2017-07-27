@@ -11,7 +11,7 @@ export default {
   props: ['value'],
   data () {
     return {
-      activeIdx: 0
+      activeIdx: 1
     }
   },
   watch: {
