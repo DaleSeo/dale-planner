@@ -19,14 +19,23 @@
         <div class="ui icon button" @click="toggleMenu">
           <i class="sidebar icon"/>
         </div>
-        <router-view></router-view>
+        <Home v-show="atHome"/>
+        <router-view v-show="!atHome"></router-view>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import Home from './home/Index.vue'
+
 export default {
+  components: {Home},
+  computed: {
+    atHome () {
+      return this.$route.path === '/'
+    }
+  },
   created () {
     Notification.requestPermission()
   },
