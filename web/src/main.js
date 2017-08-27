@@ -11,7 +11,7 @@ Vue.filter('formatDate', function (date) {
     return moment(date).format('YY/MM/DD')
 })
 
-import Home from './components/home/Index.vue'
+// import Home from './components/home/Index.vue'
 import Test from './components/test/Index.vue'
 import Todos from './components/todo/Index.vue'
 import Bookmarks from './components/bookmark/Index.vue'
@@ -19,7 +19,7 @@ import Bookmarks from './components/bookmark/Index.vue'
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    {path: '/', component: Home},
+    // {path: '/', component: Home},
     {path: '/test', component: Test},
     {path: '/todos', component: Todos},
     {path: '/bookmarks', component: Bookmarks}
